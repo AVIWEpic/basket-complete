@@ -1,0 +1,16 @@
+[
+  {
+    "id": "10001",
+    "name": "product 10001",
+    "price": 12,
+    "discountPercent": 10,
+    "imageUrl": "https://picsum.photos/200/300"
+  },
+  {
+    "id": "10002",
+    "name": "product 10003",
+    "price": 12.99,
+    "discountPercent": 20,
+    "imageUrl": "https://picsum.photos/200"
+  }
+]
