@@ -1,0 +1,22 @@
+{
+  "name": "basket-complete",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node ./backend/app.js",
+    "client": "npm start --prefix basket",
+    "dev": "npm run server & npm run client",
+    "setup": "npm install --prefix backend && npm install --prefix basket && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AVIWEpic/basket-complete.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AVIWEpic/basket-complete/issues"
+  },
+  "homepage": "https://github.com/AVIWEpic/basket-complete#readme"
+}
