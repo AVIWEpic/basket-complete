@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const { findProduct } = require("./product/product");
+const { findProduct, getProducts } = require("./product/product");
 const { saveBasket } = require("./basket/basket");
-const port = 3000;
+const port = 4000;
 
 app.use(bodyParser.json());
 
@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 app.get("/products", (req, res) => {
-  res.send(products);
+  res.send(getProducts());
 });
 
 app.get("/products/:productId", (req, res) => {
