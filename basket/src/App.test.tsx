@@ -135,12 +135,11 @@ describe("single product", () => {
     userEvent.click(screen.getAllByRole("button", { name: /buy now/i })[1]);
 
     userEvent.click(screen.getByText(products[1].name));
-    userEvent.clear(screen.getByRole("spinbutton"));
-    userEvent.type(screen.getByRole("spinbutton"), "5");
+    userEvent.type(screen.getByRole("spinbutton"), "1");
     userEvent.click(screen.getByRole("button", { name: /show all products/i }));
 
     expect(screen.getByRole("spinbutton")).toBeInTheDocument();
-    expect(screen.getByRole("spinbutton")).toHaveValue(5);
+    expect(screen.getByRole("spinbutton")).toHaveValue(11);
   });
 });
 
@@ -220,10 +219,10 @@ describe("basket", () => {
     await showBasketWithData();
 
     const expectedBasketRequestBody = {
-      items: [{ id: products[1].id, quantity: 3 }],
+      items: [{ id: products[1].id, quantity: 13 }],
     };
     const basketResult2: Basket = {
-      items: [{ ...products[1], quantity: 3 }],
+      items: [{ ...products[1], quantity: 13 }],
       total: 123.99,
     };
     let basketBody;
@@ -233,14 +232,13 @@ describe("basket", () => {
         return res(ctx.json(basketResult2));
       })
     );
-    userEvent.clear(screen.getByRole("spinbutton"));
     userEvent.type(screen.getByRole("spinbutton"), "3");
     userEvent.tab();
 
     await waitForElementToBeRemoved(() => screen.queryByTestId("loading-bar"));
 
     expect(basketBody).toMatchObject(expectedBasketRequestBody);
-    expect(screen.getByRole("spinbutton")).toHaveValue(3);
+    expect(screen.getByRole("spinbutton")).toHaveValue(13);
   });
 
   test("should show products when all quantities are removed", async () => {

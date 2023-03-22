@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -28,26 +26,18 @@ export default function BasketQuantity({
   quantity,
   updateQuantity,
 }: BasketQuantityProps) {
-  const [displayQuantity, setDisplayQuantity] = useState(quantity);
   const classes = useStyles();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (event: any) => {
-    setDisplayQuantity(event.target.value);
-  };
-  const handleBlur = () => {
-    if (displayQuantity !== quantity) {
-      updateQuantity(displayQuantity);
-    }
+    updateQuantity(event.target.value);
   };
 
   const addToBasket = () => {
-    setDisplayQuantity("1");
     updateQuantity("1");
   };
 
   const removeFromBasket = () => {
-    setDisplayQuantity("");
     updateQuantity("");
   };
 
@@ -62,8 +52,7 @@ export default function BasketQuantity({
             type="number"
             inputProps={{ min: 0, max: 10 }}
             onChange={handleChange}
-            onBlur={handleBlur}
-            value={displayQuantity}
+            value={quantity}
           />
         </div>
         <IconButton size="small" onClick={removeFromBasket}>
