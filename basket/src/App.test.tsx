@@ -201,7 +201,7 @@ describe("basket", () => {
 
     expect(basketBody).toMatchObject(expectedBasketRequestBody);
     expect(
-      screen.getByRole("button", { name: /show products/i })
+      screen.getByRole("button", { name: /products/i })
     ).toBeInTheDocument();
     expect(screen.getByText("Total: £123.99")).toBeInTheDocument();
     expect(screen.getByText(products[1].name)).toBeInTheDocument();
@@ -210,7 +210,7 @@ describe("basket", () => {
   test("should show product view with quantity still shown when show products is clicked", async () => {
     await showBasketWithData();
 
-    userEvent.click(screen.getByRole("button", { name: /show products/i }));
+    userEvent.click(screen.getByRole("button", { name: /products/i }));
     expect(screen.getByRole("spinbutton")).toBeInTheDocument();
     expect(screen.getByRole("spinbutton")).toHaveValue(1);
     expect(screen.queryAllByRole("button", { name: /buy now/i })).toHaveLength(
@@ -248,7 +248,7 @@ describe("basket", () => {
     userEvent.clear(screen.getByRole("spinbutton"));
     userEvent.tab();
     expect(
-      screen.queryByRole("button", { name: /show products/i })
+      screen.queryByRole("button", { name: /products/i })
     ).not.toBeInTheDocument();
   });
 

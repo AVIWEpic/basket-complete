@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   pageHeaderActions: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     gap: "5em",
     paddingRight: "5em",
   },
@@ -66,14 +67,16 @@ export default function BasketView({
         {basketLoading && <Loading />}
         <div className={classes.pageHeaderActions}>
           {basket.total && <h2>Total: £{basket.total}</h2>}
-          <Button
-            color="primary"
-            onClick={closeBasket}
-            variant="contained"
-            disabled={basketLoading}
-          >
-            Show Products
-          </Button>
+          <div>
+            <Button
+              color="primary"
+              onClick={closeBasket}
+              variant="contained"
+              disabled={basketLoading}
+            >
+              Products
+            </Button>
+          </div>
         </div>
       </div>
 
