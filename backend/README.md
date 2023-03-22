@@ -15,7 +15,7 @@ use `https://json-generator.com/` with
     description: '{{lorem(3, "paragraphs")}}',
     isActive: '{{bool()}}',
     price: '{{floating(10, 4000, 2)}}',
-    imageUrl: 'http://placehold.it/32x32',
-    discount: '{{floating(10, 90, 2)}}'
+    imageUrl: 'https://picsum.photos/200',
+    discountPercentage: '{{floating(10, 90, 2)}}'
   }
 ]

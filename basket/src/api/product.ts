@@ -24,7 +24,7 @@ interface Product {
   description?: string,
   imageUrl?: string,
   price: number
-  discount?: number
+  discountPercentage?: number
 }
 
 export { getProducts }

@@ -1,16 +1,16 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
 import { Product } from '../api/product';
+import { BasketItem } from '../api/basket';
+import BasketQuantity from './BasketQuantity';
+import Message from '../components/Message';
+import ProductPrice from '../product/ProductPrice';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({
   root: {
     display: 'flex',
   },
@@ -27,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
   controls: {
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
   },
   playIcon: {
     height: 38,
@@ -37,39 +35,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface BasketCardProps {
-  product: Product
+  basketItem: Product & BasketItem,
+  updateBasketItem: (item: Product & BasketItem) => void
 }
-export default function BasketCard({ product }: BasketCardProps) {
+export default function BasketCard({ basketItem, updateBasketItem }: BasketCardProps) {
   const classes = useStyles();
-  const theme = useTheme();
+  const updateQuantity = (newQuantity: string) => {
+    const quantity = newQuantity ? parseInt(newQuantity) : 0
+    updateBasketItem({ ...basketItem, quantity })
+  }
+  const displayQuantity = basketItem?.quantity.toString() || ''
 
   return (
     <Card className={classes.root}>
+      {basketItem.error && <Message notificationType={'info'} notificationText={'item.error'} />}
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {product.name}
+            {basketItem.name}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {product.description}
-          </Typography>
+          {basketItem.description && <Typography variant="subtitle1" color="textSecondary">
+            {basketItem.description}
+          </Typography>}
+          <Typography><ProductPrice product={basketItem} /></Typography>
         </CardContent>
         <div className={classes.controls}>
-          <IconButton aria-label="previous">
-            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon className={classes.playIcon} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-          </IconButton>
+          <BasketQuantity quantity={displayQuantity} updateQuantity={updateQuantity} />
         </div>
       </div>
       <CardMedia
         className={classes.cover}
-        image="/static/images/cards/live-from-space.jpg"
-        title="Live from space album cover"
+        image={basketItem.imageUrl}
       />
     </Card>
   );

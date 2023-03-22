@@ -22,9 +22,9 @@ app.get("/products/:productId", (req, res) => {
 });
 
 app.post("/basket", (req, res) => {
-  res.send(saveBasket(basket));
+  res.send(saveBasket(req.body));
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`basket app listening on port ${port}`);
 });
