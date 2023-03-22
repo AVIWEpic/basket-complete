@@ -9,15 +9,24 @@ import { Product } from "../api/product";
 import ProductPrice from "./ProductPrice";
 import { BasketItem } from "../api/basket";
 import BasketQuantity from "../basket/BasketQuantity";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
     width: "20em",
     textOverflow: "ellipse",
   },
+  rootSingle: {
+    width: "100%",
+  },
+
   media: {
     objectFit: "contain",
     height: "10em",
+  },
+  mediaSingle: {
+    objectFit: "contain",
+    height: "20em",
   },
   actionRow: {
     width: "100%",
@@ -37,12 +46,16 @@ interface ProductCardProps {
   product: Product;
   basketItem?: BasketItem;
   updateBasketItem: (updatedItem: BasketItem) => void;
+  showAll?: () => void;
+  showSingle?: () => void;
 }
 
 export default function ProductCard({
   product,
   basketItem,
   updateBasketItem,
+  showAll,
+  showSingle,
 }: ProductCardProps) {
   const classes = useStyles();
 
@@ -53,11 +66,18 @@ export default function ProductCard({
 
   const displayQuantity = basketItem?.quantity.toString() || "";
   return (
-    <Card className={classes.root}>
-      <CardActionArea>
+    <Card className={showSingle ? classes.root : classes.rootSingle}>
+      {showAll && (
+        <CardActions>
+          <Button onClick={showAll} color="secondary">
+            Show all products
+          </Button>
+        </CardActions>
+      )}
+      <CardActionArea onClick={showSingle}>
         {product.imageUrl && (
           <img
-            className={classes.media}
+            className={showSingle ? classes.media : classes.mediaSingle}
             src={product.imageUrl}
             title={product.name}
             alt=""
@@ -67,6 +87,9 @@ export default function ProductCard({
           <Typography gutterBottom variant="h5" component="h2">
             {product.name}
           </Typography>
+          {showAll && product.description && (
+            <Typography>{product.description}</Typography>
+          )}
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.actionRow}>

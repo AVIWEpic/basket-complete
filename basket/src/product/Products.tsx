@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Product } from "../api/product";
 import ProductCard from "./ProductCard";
@@ -55,6 +55,7 @@ export default function Products({
   updateBasketItems,
   viewBasket,
 }: ProductGridProps) {
+  const [selectedProduct, setSelectedProduct] = useState<Product | undefined>();
   const classes = useStyles();
 
   const basketItem = (id: string) => basketItems.find((item) => item.id === id);
@@ -69,14 +70,27 @@ export default function Products({
   };
 
   const productDisplay = () => {
-    if (products.length === 0)
+    if (products.length === 0) {
       return (
         <Message
           notificationType="info"
           notificationText={"No products found"}
         />
       );
+    }
 
+    if (selectedProduct) {
+      return (
+        <div className={classes.products}>
+          <ProductCard
+            product={selectedProduct}
+            basketItem={basketItem(selectedProduct.id)}
+            updateBasketItem={updateBasketItem}
+            showAll={() => setSelectedProduct(undefined)}
+          />
+        </div>
+      );
+    }
     return (
       <div className={classes.products}>
         {products.map((product) => (
@@ -85,6 +99,7 @@ export default function Products({
               product={product}
               basketItem={basketItem(product.id)}
               updateBasketItem={updateBasketItem}
+              showSingle={() => setSelectedProduct(product)}
             />
           </div>
         ))}

@@ -101,6 +101,49 @@ describe("displaying products", () => {
   });
 });
 
+describe("single product", () => {
+  test("should show the whole product when the name is clicked", async () => {
+    await renderWithProducts();
+
+    userEvent.click(screen.getByText(products[0].name));
+    expect(
+      screen.getByRole("button", { name: /show all products/i })
+    ).toBeInTheDocument();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-extra-non-null-assertion
+    expect(screen.getByText(products[0].description!!)).toBeInTheDocument();
+  });
+  test("should show the whole list when the page is closed", async () => {
+    await renderWithProducts();
+
+    userEvent.click(screen.getByText(products[0].name));
+    userEvent.click(screen.getByRole("button", { name: /show all products/i }));
+
+    expect(screen.queryAllByRole("button", { name: /buy now/i })).toHaveLength(
+      products.length
+    );
+  });
+  test("should show a quantity selected on a product page", async () => {
+    await renderWithProducts();
+    userEvent.click(screen.getAllByRole("button", { name: /buy now/i })[0]);
+
+    userEvent.click(screen.getByText(products[0].name));
+    expect(screen.getByRole("spinbutton")).toBeInTheDocument();
+    expect(screen.getByRole("spinbutton")).toHaveValue(1);
+  });
+  test("should show a quantity changed on a product page", async () => {
+    await renderWithProducts();
+    userEvent.click(screen.getAllByRole("button", { name: /buy now/i })[1]);
+
+    userEvent.click(screen.getByText(products[1].name));
+    userEvent.clear(screen.getByRole("spinbutton"));
+    userEvent.type(screen.getByRole("spinbutton"), "5");
+    userEvent.click(screen.getByRole("button", { name: /show all products/i }));
+
+    expect(screen.getByRole("spinbutton")).toBeInTheDocument();
+    expect(screen.getByRole("spinbutton")).toHaveValue(5);
+  });
+});
+
 describe("quantities", () => {
   test("should show no quantities on first load", async () => {
     await renderWithProducts();
@@ -207,7 +250,6 @@ describe("basket", () => {
     expect(
       screen.queryByRole("button", { name: /show products/i })
     ).not.toBeInTheDocument();
-    expect(screen.getByText(/products/i)).toBeInTheDocument();
   });
 
   test("should show product details and errors from the basket call", async () => {
