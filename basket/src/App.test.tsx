@@ -146,7 +146,9 @@ describe("single product", () => {
 describe("quantities", () => {
   test("should show no quantities on first load", async () => {
     await renderWithProducts();
-    expect(screen.getByRole("button", { name: /view basket/i })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /basket \(0\)/i })
+    ).toBeDisabled();
 
     expect(screen.queryAllByRole("spinbutton")).toHaveLength(0);
     expect(screen.queryAllByRole("button", { name: /buy now/i })).toHaveLength(
@@ -163,7 +165,7 @@ describe("quantities", () => {
       products.length - 1
     );
     expect(
-      screen.getByRole("button", { name: /view basket/i })
+      screen.getByRole("button", { name: /basket \(1\)/i })
     ).not.toBeDisabled();
   });
 
@@ -284,9 +286,9 @@ async function getToBasket() {
   await renderWithProducts();
   userEvent.click(screen.getAllByRole("button", { name: /buy now/i })[1]);
 
-  userEvent.click(screen.getByRole("button", { name: /view basket/i }));
+  userEvent.click(screen.getByRole("button", { name: /basket \(1\)/i }));
   await waitForElementToBeRemoved(() =>
-    screen.queryByRole("button", { name: /view basket/i })
+    screen.queryByRole("button", { name: /basket \(1\)/i })
   );
 }
 async function showBasketWithData(basketData?: SavedBasket) {

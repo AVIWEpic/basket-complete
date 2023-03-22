@@ -59,6 +59,10 @@ export default function Products({
   const classes = useStyles();
 
   const basketItem = (id: string) => basketItems.find((item) => item.id === id);
+  const basketCount = basketItems.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.quantity,
+    0
+  );
 
   const updateBasketItem = (item: BasketItem) => {
     const otherItems = basketItems.filter((oldItem) => oldItem.id !== item.id);
@@ -119,7 +123,7 @@ export default function Products({
             variant="contained"
             disabled={basketItems.length < 1}
           >
-            View Basket
+            Basket ({basketCount})
           </Button>
         </div>
       </div>
