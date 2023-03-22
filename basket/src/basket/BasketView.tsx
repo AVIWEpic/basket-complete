@@ -4,6 +4,7 @@ import BasketCard from "./BasketCard";
 import { BasketItem, SavedBasket } from "../api/basket";
 import { Button } from "@material-ui/core";
 import Loading from "../components/Loading";
+import basketItemSort from "../utils/basketItemSort";
 
 const useStyles = makeStyles((theme) => ({
   pageHeader: {
@@ -55,6 +56,7 @@ export default function BasketView({
     updateAndViewBasket(items);
   };
 
+  const basketItems = basketItemSort(basket.items);
   return (
     <div>
       <div className={classes.pageHeader}>
@@ -77,7 +79,7 @@ export default function BasketView({
 
       <div className={classes.productArea}>
         <div className={classes.products}>
-          {basket.items.map((item) => (
+          {basketItems.map((item) => (
             <div key={item.id} className={classes.itemBlock}>
               <BasketCard
                 basketItem={item}

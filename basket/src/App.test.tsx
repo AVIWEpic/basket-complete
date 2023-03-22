@@ -260,8 +260,8 @@ describe("basket", () => {
 
     await showBasketWithData(basketResult);
 
-    expect(screen.getAllByRole("spinbutton")[0]).toHaveValue(1);
-    expect(screen.getAllByRole("spinbutton")[1]).toHaveValue(2);
+    expect(screen.getAllByRole("spinbutton")[1]).toHaveValue(1);
+    expect(screen.getAllByRole("spinbutton")[0]).toHaveValue(2);
     expect(screen.getByText("a random error")).toBeInTheDocument();
   });
 
