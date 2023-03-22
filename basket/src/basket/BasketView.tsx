@@ -1,74 +1,92 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import BasketCard from './BasketCard';
-import { BasketItem, SavedBasket } from '../api/basket';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import BasketCard from "./BasketCard";
+import { BasketItem, SavedBasket } from "../api/basket";
+import { Button } from "@material-ui/core";
+import Loading from "../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
-  page: {
-    height: '100%',
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column'
-  },
   pageHeader: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'spacebetween',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginLeft: "2em",
+    marginRight: "2em",
   },
-  empty: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
+  pageHeaderActions: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "5em",
+    paddingRight: "5em",
   },
   productArea: {
-    width: '100%',
-    height: '80%',
-    overflow: 'auto'
+    height: "80vh",
+    overflow: "auto",
   },
   products: {
-    width: '100%',
-    display: 'flex',
+    display: "flex",
     flexGrow: 1,
-    flexWrap: 'wrap'
-
+    flexWrap: "wrap",
   },
-  itemBlock
-    : {
-    padding: '4px',
-    margin: '10px',
-    width: '135',
-    height: '150'
-  }
+  itemBlock: {
+    padding: "1em",
+  },
 }));
 interface BasketViewProps {
-  basket: SavedBasket,
-  updateAndViewBasket: (items: BasketItem[]) => void
+  basket: SavedBasket;
+  updateAndViewBasket: (items: BasketItem[]) => void;
+  closeBasket: () => void;
+  basketLoading: boolean;
 }
-export default function BasketView({ basket, updateAndViewBasket }: BasketViewProps) {
+export default function BasketView({
+  basket,
+  updateAndViewBasket,
+  closeBasket,
+  basketLoading,
+}: BasketViewProps) {
   const classes = useStyles();
 
   const updateBasketItem = (item: BasketItem) => {
-    const otherItems = basket.items.filter(oldItem => oldItem.id !== item.id)
-    const items: BasketItem[] = (item.quantity > 0) ? [...otherItems, item] : otherItems
+    const otherItems = basket.items.filter((oldItem) => oldItem.id !== item.id);
+    const items: BasketItem[] =
+      item.quantity > 0 ? [...otherItems, item] : otherItems;
 
-    updateAndViewBasket(items)
-  }
+    updateAndViewBasket(items);
+  };
 
-  return <div>
-    <h1>Basket</h1>
-    {basket.total && <h2>Total: {basket.total}</h2>}
-    <div className={classes.products} >
-
-      {basket.items.map(item =>
-        <div key={item.id} className={classes.itemBlock
-        }>
-          <BasketCard basketItem={item} updateBasketItem={updateBasketItem} />
+  return (
+    <div>
+      <div className={classes.pageHeader}>
+        <div>
+          <h1>Basket</h1>
         </div>
-      )}
-    </div>
-  </div>
+        {basketLoading && <Loading />}
+        <div className={classes.pageHeaderActions}>
+          {basket.total && <h2>Total: £{basket.total}</h2>}
+          <Button
+            color="primary"
+            onClick={closeBasket}
+            variant="contained"
+            disabled={basketLoading}
+          >
+            Show Products
+          </Button>
+        </div>
+      </div>
 
+      <div className={classes.productArea}>
+        <div className={classes.products}>
+          {basket.items.map((item) => (
+            <div key={item.id} className={classes.itemBlock}>
+              <BasketCard
+                basketItem={item}
+                updateBasketItem={updateBasketItem}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }

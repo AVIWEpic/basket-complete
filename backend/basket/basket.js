@@ -13,13 +13,13 @@ function saveBasket(basket) {
           throw Error("price or quantity not found");
         }
 
-        basketTotal += itemTotal
+        basketTotal += itemTotal;
         if (product.discountPercentage) {
           const discount = (itemTotal * product.discountPercentage) / 100;
           if (isNaN(discount)) {
             throw Error("disocunt could not be calculated");
           }
-          basketTotal -= discount
+          basketTotal -= discount;
           return {
             ...product,
             quantity,

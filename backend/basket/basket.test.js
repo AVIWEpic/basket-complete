@@ -126,13 +126,11 @@ it("should return an error for an item that has no quantity", () => {
 });
 it("should return an error when the discount is invalid", () => {
   findProduct.mockImplementation((productId) => {
-      
-        return {
-          id: "222",
-          price: 25,
-          discountPercentage: "1o",
-        };
-   
+    return {
+      id: "222",
+      price: 25,
+      discountPercentage: "1o",
+    };
   });
   const basket = {
     items: [
@@ -144,14 +142,12 @@ it("should return an error when the discount is invalid", () => {
   };
   const expectedResult = {
     items: [
-
       {
         id: "222",
         quantity: "2",
         error: "Item could not be purchased",
       },
     ],
-  
   };
 
   expect(saveBasket(basket)).toStrictEqual(expectedResult);
